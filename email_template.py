@@ -40,121 +40,6 @@ def get_email_template(message_body, company_name, company_address, company_webs
         table, td {{ mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse !important; }}
         img {{ border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }}
         
-        body {{
-            margin: 0;
-            padding: 0;
-            width: 100% !important;
-            height: 100% !important;
-            background-color: #f1f5f9;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }}
-
-        /* Premium Wrapper */
-        .email-wrapper {{
-            width: 100%;
-            background-color: #f1f5f9;
-            padding: 40px 0;
-        }}
-
-        /* Main Card */
-        .main-card {{
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #ffffff;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.04);
-            border: 1px solid #e2e8f0;
-        }}
-
-        /* Header Section */
-        .header {{
-            background: linear-gradient(135deg, #00A3FF 0%, #0077FF 100%);
-            padding: 50px 30px;
-            text-align: center;
-        }}
-
-        .brand-name {{
-            margin: 0;
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: -1px;
-            color: #ffffff;
-            text-transform: uppercase;
-        }}
-
-        .subheader {{
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 14px;
-            font-weight: 500;
-            margin-top: 8px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }}
-
-        /* Message Body */
-        .message-body {{
-            padding: 50px 40px;
-            color: #1e293b;
-        }}
-
-        .text-content {{
-            font-size: 17px;
-            line-height: 1.8;
-            color: #334155;
-            white-space: pre-wrap;
-        }}
-
-        /* Divider */
-        .divider {{
-            height: 1px;
-            background-color: #e2e8f0;
-            margin: 40px 0;
-        }}
-
-        /* CTA / Website Button */
-        .cta-button {{
-            display: inline-block;
-            background-color: #0077FF;
-            color: #ffffff !important;
-            padding: 14px 28px;
-            border-radius: 12px;
-            text-decoration: none !important;
-            font-weight: 700;
-            font-size: 15px;
-            margin-top: 10px;
-            box-shadow: 0 4px 12px rgba(0, 119, 255, 0.2);
-        }}
-
-        /* Footer Section */
-        .footer {{
-            background-color: #f8fafc;
-            padding: 40px 30px;
-            text-align: center;
-            border-top: 1px solid #e2e8f0;
-        }}
-
-        .footer-text {{
-            color: #64748b;
-            font-size: 14px;
-            margin: 8px 0;
-            line-height: 1.5;
-        }}
-
-        .footer-link {{
-            color: #0077FF;
-            text-decoration: none;
-            font-weight: 600;
-        }}
-
-        .legal-notice {{
-            font-size: 12px;
-            color: #94a3b8;
-            margin-top: 25px;
-            padding-top: 25px;
-            border-top: 1px solid #eef2f6;
-        }}
-
         /* Mobile Adjustments */
         @media only screen and (max-width: 620px) {{
             .email-wrapper {{ padding: 0 !important; }}
@@ -165,40 +50,40 @@ def get_email_template(message_body, company_name, company_address, company_webs
         }}
     </style>
 </head>
-<body>
-    <div class="email-wrapper">
-        <div class="main-card">
+<body style="margin: 0; padding: 0; width: 100% !important; height: 100% !important; background-color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+    <div class="email-wrapper" style="width: 100%; background-color: #f1f5f9; padding: 40px 0;">
+        <div class="main-card" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.04); border: 1px solid #e2e8f0;">
             <!-- Dynamic Header -->
-            <div class="header">
+            <div class="header" style="background: linear-gradient(135deg, #00A3FF 0%, #0077FF 100%); padding: 50px 30px; text-align: center;">
                 {logo_html}
-                <div class="brand-name">{display_company_name}</div>
-                <div class="subheader">Official Communication</div>
+                <div class="brand-name" style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -1px; color: #ffffff; text-transform: uppercase;">{display_company_name}</div>
+                <div class="subheader" style="color: rgba(255, 255, 255, 0.85); font-size: 14px; font-weight: 500; margin-top: 8px; letter-spacing: 1px; text-transform: uppercase;">Official Communication</div>
             </div>
 
             <!-- Content Area -->
-            <div class="message-body">
-                <div class="text-content">
+            <div class="message-body" style="padding: 50px 40px; color: #1e293b;">
+                <div class="text-content" style="font-size: 17px; line-height: 1.8; color: #334155; white-space: pre-wrap;">
                     {message_body}
                 </div>
                 
-                <div class="divider"></div>
+                <div class="divider" style="height: 1px; background-color: #e2e8f0; margin: 40px 0;"></div>
                 
                 <div style="text-align: center;">
-                    <a href="http://{display_website}" class="cta-button">Visit Official Website</a>
+                    <a href="http://{display_website}" class="cta-button" style="display: inline-block; background-color: #0077FF; color: #ffffff !important; padding: 14px 28px; border-radius: 12px; text-decoration: none !important; font-weight: 700; font-size: 15px; margin-top: 10px; box-shadow: 0 4px 12px rgba(0, 119, 255, 0.2);">Visit Official Website</a>
                 </div>
             </div>
 
             <!-- Footer Details -->
-            <div class="footer">
-                <div class="footer-text">
+            <div class="footer" style="background-color: #f8fafc; padding: 40px 30px; text-align: center; border-top: 1px solid #e2e8f0;">
+                <div class="footer-text" style="color: #64748b; font-size: 14px; margin: 8px 0; line-height: 1.5;">
                     <strong>{display_company_name} HQ</strong><br>
                     {display_address}
                 </div>
-                <div class="footer-text">
-                    <a href="http://{display_website}" class="footer-link">{display_website}</a>
+                <div class="footer-text" style="color: #64748b; font-size: 14px; margin: 8px 0; line-height: 1.5;">
+                    <a href="http://{display_website}" class="footer-link" style="color: #0077FF; text-decoration: none; font-weight: 600;">{display_website}</a>
                 </div>
                 
-                <div class="legal-notice">
+                <div class="legal-notice" style="font-size: 12px; color: #94a3b8; margin-top: 25px; padding-top: 25px; border-top: 1px solid #eef2f6;">
                     This is an automated message from <b>{display_company_name}</b>.<br>
                     © 2025 All Rights Reserved.
                 </div>
