@@ -71,6 +71,14 @@ st.markdown(f"""
         padding-bottom: 6rem !important;
         max-width: 800px !important;
     }}
+    
+    @media (max-width: 768px) {{
+        .block-container {{
+            padding-top: 2rem !important;
+            padding-bottom: 4rem !important;
+            max-width: 100% !important;
+        }}
+    }}
 
     /* 4. Elegant Header Section */
     .brand-header {{
@@ -84,7 +92,7 @@ st.markdown(f"""
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-family: 'Outfit', sans-serif;
-        font-size: clamp(3rem, 6vw, 4.5rem) !important;
+        font-size: clamp(2.5rem, 6vw, 4.5rem) !important;
         font-weight: 800 !important;
         letter-spacing: -0.04em;
         margin-bottom: 0.5rem;
@@ -93,7 +101,7 @@ st.markdown(f"""
     
     .brand-subtitle {{
         color: #94a3b8;
-        font-size: clamp(0.9rem, 2vw, 1.1rem) !important;
+        font-size: clamp(0.8rem, 2vw, 1.1rem) !important;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.15em;
@@ -113,6 +121,16 @@ st.markdown(f"""
         border: 1px solid rgba(255, 255, 255, 0.08);
         margin-bottom: 1.5rem;
         transition: all 0.3s ease;
+    }}
+    
+    @media (max-width: 768px) {{
+        div[data-testid="stVerticalBlock"] > div:has(div.stTextInput),
+        div[data-testid="stVerticalBlock"] > div:has(div.stTextArea) {{
+            padding: 1.5rem !important;
+            border-radius: 20px !important;
+        }}
+        
+        .brand-header {{ margin-bottom: 2rem !important; }}
     }}
     
     div[data-testid="stVerticalBlock"] > div:has(div.stTextInput):hover,
@@ -271,15 +289,15 @@ if 'email_subject' not in st.session_state: st.session_state.email_subject = ""
 if 'email_body' not in st.session_state: st.session_state.email_body = ""
 
 # Main Form
-col1, col2 = st.columns([3, 1])
-with col1:
-    receiver_email = st.text_input("📧 Recipient Email Address", placeholder="Enter official email...", key="email_to")
-with col2:
-    if receiver_email:
-        valid = re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', receiver_email) is not None
-        st.markdown(f"<div style='height: 3.6rem; display: flex; align-items: flex-end;'><p style='color: {'#166534' if valid else '#991b1b'}; font-weight: 600;'>{'✅ Valid' if valid else '❌ Invalid'}</p></div>", unsafe_allow_html=True)
-    else:
-        st.markdown("<div style='height: 3.6rem;'></div>", unsafe_allow_html=True)
+receiver_email = st.text_input("📧 Recipient Email Address", placeholder="Enter official email...", key="email_to")
+
+if receiver_email:
+    valid = re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', receiver_email) is not None
+    validation_color = "#22c55e" if valid else "#ef4444"
+    validation_msg = "✅ Valid Email Address" if valid else "❌ Invalid Email Format"
+    st.caption(f"<span style='color: {validation_color}; font-weight: 600;'>{validation_msg}</span>", unsafe_allow_html=True)
+else:
+    st.caption("Please enter a valid recipient email address.")
 
 subject = st.text_input("🗞️ Campaign Subject Line", placeholder="What is this email about?", key="email_subject")
 message = st.text_area("✍️ Message Body", placeholder="Craft your message here... HTML is supported.", height=300, key="email_body")
