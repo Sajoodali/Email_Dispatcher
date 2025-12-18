@@ -47,145 +47,162 @@ def is_valid_email(email):
 st.markdown(f"""
     <style>
     /* 1. Global Reset & Modern Typography */
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap');
     
     html, body, [class*="css"] {{
-        font-family: 'Outfit', 'Inter', sans-serif;
+        font-family: 'Plus Jakarta Sans', sans-serif;
         font-size: 16px;
+        color: #e2e8f0;
     }}
 
-    /* 2. Globium Blue Background */
+    /* 2. Enhanced Premium Dark Background */
     .stApp {{
-        background: radial-gradient(circle at top right, #f0f9ff, #e0f2fe, #bae6fd);
+        background: 
+            radial-gradient(at 0% 0%, hsla(222, 47%, 11%, 1) 0, transparent 50%), 
+            radial-gradient(at 100% 0%, hsla(210, 40%, 15%, 1) 0, transparent 50%), 
+            radial-gradient(at 50% 100%, hsla(222, 47%, 10%, 1) 0, transparent 50%),
+            #0f172a;
         background-attachment: fixed;
     }}
     
-    /* 3. Responsive Container */
+    /* 3. Responsive & Centered Container */
     .block-container {{
-        padding-top: 3rem !important;
-        padding-bottom: 5rem !important;
-        max-width: 900px !important;
-    }}
-
-    @media screen and (max-width: 768px) {{
-        .block-container {{
-            padding-top: 2rem !important;
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
-        }}
+        padding-top: 4rem !important;
+        padding-bottom: 6rem !important;
+        max-width: 800px !important;
     }}
 
     /* 4. Elegant Header Section */
     .brand-header {{
         text-align: center;
-        margin-bottom: 3rem;
+        margin-bottom: 4rem;
+        animation: fadeInDown 0.8s ease-out;
     }}
     
     .brand-title {{
-        background: linear-gradient(135deg, #00A3FF 0%, #0077FF 100%);
+        background: linear-gradient(135deg, #f8fafc 0%, #94a3b8 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-size: clamp(2.5rem, 8vw, 4rem) !important;
-        font-weight: 900 !important;
-        letter-spacing: -2px;
-        margin: 0;
+        font-family: 'Outfit', sans-serif;
+        font-size: clamp(3rem, 6vw, 4.5rem) !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.04em;
+        margin-bottom: 0.5rem;
         line-height: 1.1;
     }}
     
     .brand-subtitle {{
-        color: #0369a1;
-        font-size: clamp(1rem, 4vw, 1.4rem) !important;
+        color: #94a3b8;
+        font-size: clamp(0.9rem, 2vw, 1.1rem) !important;
         font-weight: 600;
-        margin-top: 1rem;
-        letter-spacing: 1px;
         text-transform: uppercase;
+        letter-spacing: 0.15em;
     }}
 
-    /* 5. Glassmorphism Main Card */
-    div[data-testid="stVerticalBlock"] > div:has(div.stTextInput) {{
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        padding: clamp(1.5rem, 5vw, 4rem);
-        border-radius: 24px;
-        box-shadow: 0 20px 50px rgba(0, 100, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.8);
+    /* 5. Modern Glass Cards (Dark) */
+    div[data-testid="stVerticalBlock"] > div:has(div.stTextInput),
+    div[data-testid="stVerticalBlock"] > div:has(div.stTextArea) {{
+        background: rgba(30, 41, 59, 0.7);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        padding: 2.5rem;
+        border-radius: 28px;
+        box-shadow: 
+            0 4px 20px -2px rgba(0, 0, 0, 0.3), 
+            0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+    }}
+    
+    div[data-testid="stVerticalBlock"] > div:has(div.stTextInput):hover,
+    div[data-testid="stVerticalBlock"] > div:has(div.stTextArea):hover {{
+        transform: translateY(-2px);
+        box-shadow: 
+            0 12px 30px -5px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+        background: rgba(30, 41, 59, 0.8);
     }}
 
-    /* 6. Optimized Input Fields */
-    .stTextInput input {{
-        background: #ffffff !important;
-        border: 2px solid #bae6fd !important;
-        border-radius: 12px !important;
-        padding: 1.2rem 1.5rem !important;
-        font-size: 1.3rem !important;
-        font-weight: 500 !important;
-        color: #0c4a6e !important;
-    }}
-
-    .stTextArea textarea {{
-        background: #ffffff !important;
-        border: 2px solid #bae6fd !important;
-        border-radius: 12px !important;
-        padding: 1rem 1.2rem !important;
-        font-size: 1.2rem !important;
-        font-weight: 500 !important;
-        color: #0c4a6e !important;
+    /* 6. Refined Inputs (Dark) */
+    .stTextInput input, .stTextArea textarea {{
+        background: #020617 !important;
+        border: 1px solid #334155 !important;
+        border-radius: 16px !important;
+        padding: 1.1rem 1.4rem !important;
+        font-size: 1.05rem !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+        color: #f1f5f9 !important;
+        transition: all 0.2s ease;
     }}
 
     .stTextInput input:focus, .stTextArea textarea:focus {{
-        border-color: #00A3FF !important;
-        box-shadow: 0 0 0 4px rgba(0, 163, 255, 0.1) !important;
-        outline: none !important;
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2) !important;
+        transform: translateY(-1px);
     }}
     
-    /* Elegant Labels */
     .stTextInput label, .stTextArea label {{
-        font-size: 1.2rem !important;
+        font-size: 0.9rem !important;
         font-weight: 700 !important;
-        color: #0369a1 !important;
+        color: #94a3b8 !important;
         margin-bottom: 0.6rem !important;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
     }}
 
-    /* 7. Action Button */
+    /* 7. Primary Action Button (Dark) */
     .stButton button {{
-        background: linear-gradient(135deg, #00A3FF 0%, #0077FF 100%) !important;
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
         color: white !important;
         font-weight: 700 !important;
-        padding: 1.4rem 3rem !important;
-        border-radius: 15px !important;
+        padding: 1.1rem 3rem !important;
+        border-radius: 18px !important;
         border: none !important;
         width: 100% !important;
-        font-size: 1.4rem !important;
-        box-shadow: 0 10px 20px rgba(0, 163, 255, 0.2) !important;
-        transition: all 0.3s ease;
+        font-size: 1.15rem !important;
+        letter-spacing: 0.02em !important;
+        box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.3) !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }}
 
     .stButton button:hover {{
         transform: translateY(-3px);
-        box-shadow: 0 15px 30px rgba(0, 163, 255, 0.3) !important;
+        box-shadow: 0 20px 30px -8px rgba(37, 99, 235, 0.4) !important;
+        background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%) !important;
+    }}
+    
+    .stButton button:active {{
+        transform: translateY(-1px);
     }}
 
-    /* 9. Hide Sidebar */
+    /* 9. Utility & Hiding */
     [data-testid="stSidebar"] {{ display: none !important; }}
     [data-testid="collapsedControl"] {{ display: none !important; }}
     
-    /* 10. Modern Preview Expander */
+    /* 10. Expander Customization (Dark) */
     .streamlit-expanderHeader {{
-        background: rgba(240, 249, 251, 0.8) !important;
-        border: 1px solid #bae6fd !important;
-        border-radius: 15px !important;
-        font-size: 1.2rem !important;
+        background: rgba(30, 41, 59, 0.6) !important;
+        border: 1px solid #334155 !important;
+        border-radius: 14px !important;
+        color: #cbd5e1 !important;
         font-weight: 600 !important;
+        font-size: 1rem !important;
     }}
     
-    /* Micro-animations */
-    @keyframes fadeIn {{
-        from {{ opacity: 0; transform: translateY(10px); }}
+    /* Animations */
+    @keyframes fadeInDown {{
+        from {{ opacity: 0; transform: translateY(-20px); }}
+        to {{ opacity: 1; transform: translateY(0); }}
+    }}
+    
+    @keyframes fadeInUp {{
+        from {{ opacity: 0; transform: translateY(20px); }}
         to {{ opacity: 1; transform: translateY(0); }}
     }}
     
     div[data-testid="stVerticalBlock"] > div {{
-        animation: fadeIn 0.6s ease-out forwards;
+        animation: fadeInUp 0.6s ease-out forwards;
     }}
     </style>
 """, unsafe_allow_html=True)
@@ -217,22 +234,32 @@ st.markdown("""
 is_connected = bool(SENDER_EMAIL and SENDER_APP_PASSWORD)
 col_stat1, col_stat2 = st.columns(2)
 
+
 with col_stat1:
     st.markdown(f"""
-        <div style="background: rgba({'34, 197, 94' if is_connected else '239, 68, 68'}, 0.1); 
-                    border: 1px solid rgba({'34, 197, 94' if is_connected else '239, 68, 68'}, 0.2); 
-                    padding: 1.2rem; border-radius: 15px; text-align: center;">
-            <div style="font-size: 0.8rem; color: #15803d; font-weight: 700; text-transform: uppercase;">System Status</div>
-            <div style="font-size: 1.1rem; color: #166534; font-weight: 600;">{'🟢 Connected' if is_connected else '🔴 Disconnected'}</div>
+        <div style="background: rgba(30, 41, 59, 1); 
+                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+                    border: 1px solid #334155;
+                    padding: 1rem; border-radius: 16px; text-align: center;
+                    display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+            <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem;">System Status</div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="height: 8px; width: 8px; background-color: {'#4ade80' if is_connected else '#ef4444'}; border-radius: 50%; display: inline-block;"></span>
+                <span style="font-size: 1rem; color: {'#4ade80' if is_connected else '#ef4444'}; font-weight: 600;">{'System Online' if is_connected else 'Disconnected'}</span>
+            </div>
         </div>
     """, unsafe_allow_html=True)
 
+
 with col_stat2:
     st.markdown(f"""
-        <div style="background: rgba(0, 163, 255, 0.1); border: 1px solid rgba(0, 163, 255, 0.2); 
-                    padding: 1.2rem; border-radius: 15px; text-align: center;">
-            <div style="font-size: 0.8rem; color: #0369a1; font-weight: 700; text-transform: uppercase;">Active Entity</div>
-            <div style="font-size: 1.1rem; color: #075985; font-weight: 600;">🏢 {COMPANY_NAME}</div>
+        <div style="background: rgba(30, 41, 59, 1); 
+                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+                    border: 1px solid #334155;
+                    padding: 1rem; border-radius: 16px; text-align: center;
+                     display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+            <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem;">Active Entity</div>
+            <div style="font-size: 1rem; color: #f8fafc; font-weight: 600;">{COMPANY_NAME}</div>
         </div>
     """, unsafe_allow_html=True)
 
