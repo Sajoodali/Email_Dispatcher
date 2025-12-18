@@ -42,54 +42,98 @@ def get_email_template(message_body, company_name, company_address, company_webs
         
         /* Mobile Adjustments */
         @media only screen and (max-width: 620px) {{
-            .email-wrapper {{ padding: 0 !important; }}
-            .main-card {{ border-radius: 0 !important; border: none !important; }}
+            .wrapper-table {{ padding: 0 !important; }}
+            .main-card {{ width: 100% !important; border-radius: 0 !important; border: none !important; }}
             .message-body {{ padding: 35px 25px !important; }}
-            .header {{ padding: 40px 20px !important; }}
+            .header-td {{ padding: 40px 20px !important; }}
             .brand-name {{ font-size: 24px !important; }}
         }}
     </style>
 </head>
 <body style="margin: 0; padding: 0; width: 100% !important; height: 100% !important; background-color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-    <div class="email-wrapper" style="width: 100%; background-color: #f1f5f9; padding: 40px 0;">
-        <div class="main-card" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.04); border: 1px solid #e2e8f0;">
-            <!-- Dynamic Header -->
-            <div class="header" style="background: linear-gradient(135deg, #00A3FF 0%, #0077FF 100%); padding: 50px 30px; text-align: center;">
-                {logo_html}
-                <div class="brand-name" style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -1px; color: #ffffff; text-transform: uppercase;">{display_company_name}</div>
-                <div class="subheader" style="color: rgba(255, 255, 255, 0.85); font-size: 14px; font-weight: 500; margin-top: 8px; letter-spacing: 1px; text-transform: uppercase;">Official Communication</div>
-            </div>
+    <center style="width: 100%; background-color: #f1f5f9;">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#f1f5f9" style="width: 100%; background-color: #f1f5f9;">
+            <tr>
+                <td align="center" valign="top" class="wrapper-table" style="padding: 40px 0;">
+                    <!-- Main Card -->
+                    <table class="main-card" width="600" border="0" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="width: 600px; max-width: 600px; background-color: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.04); border: 1px solid #e2e8f0;">
+                        <!-- Dynamic Header -->
+                        <tr>
+                            <td class="header-td" align="center" style="background-color: #0077FF; background: linear-gradient(135deg, #00A3FF 0%, #0077FF 100%); padding: 50px 30px;">
+                                <!-- Logo Container -->
+                                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td align="center">
+                                            {logo_html}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <div class="brand-name" style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -1px; color: #ffffff; text-transform: uppercase; font-family: sans-serif;">{display_company_name}</div>
+                                            <div class="subheader" style="color: rgba(255, 255, 255, 0.85); font-size: 14px; font-weight: 500; margin-top: 8px; letter-spacing: 1px; text-transform: uppercase;">Official Communication</div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
 
-            <!-- Content Area -->
-            <div class="message-body" style="padding: 50px 40px; color: #1e293b;">
-                <div class="text-content" style="font-size: 17px; line-height: 1.8; color: #334155; white-space: pre-wrap;">
-                    {message_body}
-                </div>
-                
-                <div class="divider" style="height: 1px; background-color: #e2e8f0; margin: 40px 0;"></div>
-                
-                <div style="text-align: center;">
-                    <a href="http://{display_website}" class="cta-button" style="display: inline-block; background-color: #0077FF; color: #ffffff !important; padding: 14px 28px; border-radius: 12px; text-decoration: none !important; font-weight: 700; font-size: 15px; margin-top: 10px; box-shadow: 0 4px 12px rgba(0, 119, 255, 0.2);">Visit Official Website</a>
-                </div>
-            </div>
+                        <!-- Content Area -->
+                        <tr>
+                            <td class="message-body" style="padding: 50px 40px; color: #1e293b;">
+                                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td class="text-content" style="font-size: 17px; line-height: 1.8; color: #334155; white-space: pre-wrap; font-family: sans-serif;">
+                                            {message_body}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-top: 40px; padding-bottom: 40px;">
+                                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td style="border-bottom: 1px solid #e2e8f0; font-size: 0; line-height: 0;">&nbsp;</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <a href="http://{display_website}" class="cta-button" style="display: inline-block; background-color: #0077FF; color: #ffffff !important; padding: 14px 28px; border-radius: 12px; text-decoration: none !important; font-weight: 700; font-size: 15px; box-shadow: 0 4px 12px rgba(0, 119, 255, 0.2); font-family: sans-serif;">Visit Official Website</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
 
-            <!-- Footer Details -->
-            <div class="footer" style="background-color: #f8fafc; padding: 40px 30px; text-align: center; border-top: 1px solid #e2e8f0;">
-                <div class="footer-text" style="color: #64748b; font-size: 14px; margin: 8px 0; line-height: 1.5;">
-                    <strong>{display_company_name} HQ</strong><br>
-                    {display_address}
-                </div>
-                <div class="footer-text" style="color: #64748b; font-size: 14px; margin: 8px 0; line-height: 1.5;">
-                    <a href="http://{display_website}" class="footer-link" style="color: #0077FF; text-decoration: none; font-weight: 600;">{display_website}</a>
-                </div>
-                
-                <div class="legal-notice" style="font-size: 12px; color: #94a3b8; margin-top: 25px; padding-top: 25px; border-top: 1px solid #eef2f6;">
-                    This is an automated message from <b>{display_company_name}</b>.<br>
-                    © 2025 All Rights Reserved.
-                </div>
-            </div>
-        </div>
-    </div>
+                        <!-- Footer Details -->
+                        <tr>
+                            <td class="footer" align="center" style="background-color: #f8fafc; padding: 40px 30px; border-top: 1px solid #e2e8f0;">
+                                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td align="center" class="footer-text" style="color: #64748b; font-size: 14px; margin: 8px 0; line-height: 1.5; font-family: sans-serif;">
+                                            <strong>{display_company_name} HQ</strong><br>
+                                            {display_address}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" class="footer-text" style="padding-top: 8px; color: #64748b; font-size: 14px; line-height: 1.5; font-family: sans-serif;">
+                                            <a href="http://{display_website}" class="footer-link" style="color: #0077FF; text-decoration: none; font-weight: 600;">{display_website}</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" class="legal-notice" style="font-size: 12px; color: #94a3b8; margin-top: 25px; padding-top: 25px; border-top: 1px solid #eef2f6; font-family: sans-serif;">
+                                            <br>
+                                            This is an automated message from <b>{display_company_name}</b>.<br>
+                                            © 2025 All Rights Reserved.
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </center>
 </body>
 </html>
     """
