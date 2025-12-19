@@ -363,19 +363,28 @@
 
 
 
+
+
+
 import streamlit as st
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import re
-from email_template import get_email_template
 import os
-from dotenv import load_dotenv
 import base64
 import time
 
-# Load environment variables
-load_dotenv()
+# --- IMPORT TEMPLATE SAFELY ---
+# Agar file upload na hui ho to app crash na ho
+try:
+    from email_template import get_email_template
+except ImportError:
+    # Fallback agar template file missing ho
+    def get_email_template(body, name, address, website, logo):
+        return f"<html><body><h2>{name}</h2><p>{body}</p><hr><p>{address} | {website}</p></body></html>"
+
+from dotenv import load_dotenv
 
 # Page configuration
 st.set_page_config(
@@ -385,55 +394,67 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CONFIGURATION ---
-SENDER_EMAIL = os.getenv("SENDER_EMAIL", "")
-SENDER_APP_PASSWORD = os.getenv("SENDER_APP_PASSWORD", "")
-COMPANY_NAME = os.getenv("COMPANY_NAME", "Globium Cloud")
-COMPANY_ADDRESS = os.getenv("COMPANY_ADDRESS", "Official Business Address")
-COMPANY_WEBSITE = os.getenv("COMPANY_WEBSITE", "www.globiumcloud.com")
+# Load environment variables (Local Support)
+load_dotenv()
+
+# --- CONFIGURATION (UPDATED FOR DEPLOYMENT) ---
+# Ye function check karega ke st.secrets (Cloud) hai ya .env (Local)
+def get_config(key, default=""):
+    try:
+        if key in st.secrets:
+            return st.secrets[key]
+    except Exception:
+        pass
+    return os.getenv(key, default)
+
+SENDER_EMAIL = get_config("SENDER_EMAIL")
+SENDER_APP_PASSWORD = get_config("SENDER_APP_PASSWORD")
+COMPANY_NAME = get_config("COMPANY_NAME", "Globium Cloud")
+COMPANY_ADDRESS = get_config("COMPANY_ADDRESS", "Official Business Address")
+COMPANY_WEBSITE = get_config("COMPANY_WEBSITE", "www.globiumcloud.com")
 
 # --- HELPER FUNCTIONS ---
 def get_base64_logo(file_path):
     try:
-        with open(file_path, "rb") as f:
-            return base64.b64encode(f.read()).decode()
+        # Check if file exists to prevent deployment crash
+        if os.path.exists(file_path):
+            with open(file_path, "rb") as f:
+                return base64.b64encode(f.read()).decode()
+        return None
     except:
         return None
 
 def is_valid_email(email):
     return re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email) is not None
 
+# Logo file ka naam check kr len ke repo me upload hua hai ya nahi
 LOGO_BASE64 = get_base64_logo("GC-Logo.jpg")
 is_connected = bool(SENDER_EMAIL and SENDER_APP_PASSWORD)
 
-# --- MINIMAL STYLING (Background & Clean up) ---
+# --- MINIMAL STYLING ---
 st.markdown("""
     <style>
-    /* Sirf background aur basic coloring k liye global css zaruri hai */
     .stApp {
         background: radial-gradient(at 0% 0%, #0f172a 0, #020617 100%);
         color: #e2e8f0;
     }
-    /* Input Fields ko clean look dena */
     .stTextInput input, .stTextArea textarea {
         background-color: rgba(30, 41, 59, 0.5) !important;
         color: white !important;
         border: 1px solid #334155 !important;
     }
-    /* Button Styling */
     .stButton button {
         background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
         color: white !important;
         border: none !important;
         font-weight: bold !important;
     }
-    /* Remove Header/Footer defaults */
     header {visibility: hidden;}
     footer {visibility: hidden;}
     </style>
 """, unsafe_allow_html=True)
 
-# --- UI HEADER (Inline Styles) ---
+# --- UI HEADER ---
 if LOGO_BASE64:
     st.markdown(f"""
         <div style="display: flex; justify-content: center; margin-bottom: 20px;">
@@ -450,11 +471,11 @@ st.markdown(f"""
     </div>
 """, unsafe_allow_html=True)
 
-# --- STATUS CARDS (Inline Styles) ---
+# --- STATUS CARDS ---
 col1, col2 = st.columns(2)
 with col1:
     status_color = '#4ade80' if is_connected else '#ef4444'
-    status_text = 'System Online' if is_connected else 'Disconnected'
+    status_text = 'System Online' if is_connected else 'Configuration Missing'
     st.markdown(f"""
         <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid #334155; padding: 15px; border-radius: 12px; text-align: center;">
             <div style="font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; font-weight: bold;">SMTP Status</div>
@@ -484,7 +505,8 @@ message = st.text_area("Message Body", placeholder="Type your message here (HTML
 # --- PREVIEW SECTION ---
 if message:
     with st.expander("👁️ Live Preview"):
-        preview_html = get_email_template(message, COMPANY_NAME, COMPANY_ADDRESS, COMPANY_WEBSITE, LOGO_BASE64)
+        # Safe handling if logo is missing
+        preview_html = get_email_template(message, COMPANY_NAME, COMPANY_ADDRESS, COMPANY_WEBSITE, LOGO_BASE64 or "")
         st.components.v1.html(preview_html, height=400, scrolling=True)
 
 st.divider()
@@ -492,7 +514,7 @@ st.divider()
 # --- SEND LOGIC ---
 if st.button("🚀 Dispatch Campaign", use_container_width=True):
     if not is_connected:
-        st.error("❌ System disconnected. Check .env file.")
+        st.error("❌ System disconnected. Please configure Secrets in Streamlit Settings.")
     elif not receiver_email or not is_valid_email(receiver_email):
         st.error("❌ Invalid email format.")
     elif not subject or not message:
@@ -505,9 +527,10 @@ if st.button("🚀 Dispatch Campaign", use_container_width=True):
                 msg['To'] = receiver_email
                 msg['Subject'] = subject
                 
-                html_content = get_email_template(message, COMPANY_NAME, COMPANY_ADDRESS, COMPANY_WEBSITE, LOGO_BASE64)
+                html_content = get_email_template(message, COMPANY_NAME, COMPANY_ADDRESS, COMPANY_WEBSITE, LOGO_BASE64 or "")
                 msg.attach(MIMEText(html_content, 'html'))
                 
+                # SMTP Server Connection
                 with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=15) as server:
                     server.login(SENDER_EMAIL.strip(), SENDER_APP_PASSWORD.strip().replace(" ", ""))
                     server.send_message(msg)
@@ -526,7 +549,7 @@ if st.button("🚀 Dispatch Campaign", use_container_width=True):
                 status.update(label="Failed", state="error")
                 st.error(f"Error: {str(e)}")
 
-# --- FOOTER (Inline Styles) ---
+# --- FOOTER ---
 st.markdown(f"""
     <div style="text-align: center; margin-top: 50px; color: #475569; font-size: 0.8rem;">
         Powered by <b>{COMPANY_NAME}</b> System
